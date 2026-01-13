@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Anniversary My Love</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Indie+Flower&family=Poppins:wght@300;400;600&family=Sacramento&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-pink: #ffb7c5;
+            --deep-rose: #d63384;
+            --cream-bg: #fdfbf7;
+            --text-color: #5a5a5a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--cream-bg);
+            color: var(--text-color);
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* Page Management */
+        .page {
+            display: none;
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+            animation: fadeIn 1s ease;
+            padding-bottom: 80px; /* Space for scrolling */
+        }
+
+        .active-page { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 { font-family: 'Sacramento', cursive; font-size: 2.5rem; color: var(--deep-rose); margin-bottom: 10px; }
+        h2 { font-family: 'Dancing Script', cursive; font-size: 2rem; color: #e05d83; margin-bottom: 15px; }
+        p { font-size: 0.95rem; line-height: 1.6; margin-bottom: 15px; }
+
+        /* Buttons */
+        .btn {
+            background: var(--primary-pink);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(255, 183, 197, 0.4);
+            transition: transform 0.2s;
+            margin-top: 15px;
+            font-family: 'Poppins', sans-serif;
+        }
+        .btn:active { transform: scale(0.95); }
+
+        /* --- Page 1: Welcome (Typewriter) --- */
+        .typewriter p {
+            overflow: hidden; 
+            border-right: .15em solid orange; 
+            white-space: nowrap; 
+            margin: 0 auto; 
+            letter-spacing: .10em; 
+            animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
+        }
+        .falling-hearts {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: -1;
+        }
+        .gift-box {
+            font-size: 80px;
+            margin: 40px auto;
+            cursor: pointer;
+            animation: shake 2s infinite;
+        }
+        @keyframes shake {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(5deg); }
+            50% { transform: rotate(0deg); }
+            75% { transform: rotate(-5deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        /* --- Page 2: Dashboard --- */
+        .timer-box {
+            background: white; padding: 15px; border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin: 20px 0;
+        }
+        .timer { font-family: 'Courier New', monospace; font-weight: bold; color: var(--deep-rose); }
+        
+        .scratch-container {
+            position: relative; width: 300px; height: 100px; margin: 20px auto;
+            border-radius: 10px; overflow: hidden; cursor: crosshair;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .scratch-content {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: white; display: flex; align-items: center; justify-content: center;
+            font-family: 'Dancing Script'; font-size: 1.5rem; color: var(--deep-rose); padding: 10px; text-align: center;
+        }
+        #scratchCanvas { position: relative; z-index: 2; }
+
+        /* --- Page 3: Password --- */
+        .lock-input {
+            padding: 10px; border: 2px solid var(--primary-pink);
+            border-radius: 8px; width: 80%; margin: 10px 0; outline: none;
+            text-align: center; font-size: 1.1rem;
+        }
+        .hint-btn { color: #aaa; font-size: 0.8rem; text-decoration: underline; cursor: pointer; margin-top: 5px; }
+
+        /* --- Page 4: Timeline --- */
+        .memory-card {
+            background: white; border-left: 4px solid var(--primary-pink);
+            margin: 15px 0; padding: 15px; text-align: left;
+            border-radius: 0 10px 10px 0; cursor: pointer;
+            transition: all 0.3s;
+        }
+        .memory-card h3 { color: var(--deep-rose); font-size: 1.1rem; margin-bottom: 5px; }
+        .memory-details { display: none; margin-top: 10px; padding-top: 10px; border-top: 1px dashed #eee; }
+        
+        /* Two Image Grid */
+        .img-two-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .memory-img { width: 100%; border-radius: 8px; object-fit: cover; height: 150px; }
+
+        /* --- Special Page: First Date --- */
+        .first-date-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .first-date-grid img { width: 100%; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+
+        /* --- Page 5: Polaroid Slideshow --- */
+        .carousel {
+            display: flex; overflow-x: auto; scroll-snap-type: x mandatory;
+            gap: 20px; padding: 20px 0;
+        }
+        .polaroid {
+            flex: 0 0 80%; scroll-snap-align: center;
+            background: white; padding: 15px 15px 40px 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); transform: rotate(-2deg);
+        }
+        .polaroid:nth-child(even) { transform: rotate(2deg); }
+        .polaroid img { width: 100%; border-radius: 2px; }
+        .caption { font-family: 'Indie Flower'; margin-top: 15px; color: #555; }
+
+        /* --- Page 7: Letter --- */
+        .envelope-container { margin: 30px auto; perspective: 1000px; }
+        .envelope {
+            width: 300px; height: 200px; background: #ffb7c5; position: relative;
+            margin: 0 auto; transition: transform 0.6s; transform-style: preserve-3d;
+        }
+        .letter-content {
+            display: none; background: white; padding: 20px;
+            font-family: 'Indie Flower', cursive; text-align: left;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin-top: 20px;
+            border-radius: 5px; max-height: 400px; overflow-y: auto;
+        }
+
+        /* --- Page 8: Ending --- */
+        .us-photo {
+            width: 100%;
+            max-width: 350px;
+            border-radius: 15px;
+            border: 5px solid white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            margin: 20px 0;
+        }
+
+        /* --- Music Control --- */
+        .music-toggle { margin-bottom: 20px; font-size: 0.9rem; color: #888; cursor: pointer; }
+        
+        .hidden { display: none; }
+        .error { color: red; font-size: 0.8rem; margin-top: 5px; display: none; }
+    </style>
+</head>
+<body>
+
+    <audio id="bgMusic" loop>
+        <source src="bg.mp3" type="audio/mpeg">
+    </audio>
+
+    <audio id="firstDateMusic" loop>
+        <source src="firstdate.m4a" type="audio/mp4">
+    </audio>
+
+    <audio id="galleryMusic" loop>
+        <source src="gallery.m4a" type="audio/mp4">
+    </audio>
+
+       <audio id="recordedSong">
+        <source src="recording.m4a" type="audio/mp4">
+    </audio>
+
+
+    <div class="falling-hearts" id="heartsContainer"></div>
+
+    <div id="page1" class="page active-page">
+        <h2>Welcome jii Tiduu meet</h2>
+        <div style="margin-top: 20px; min-height: 100px;">
+            <p id="typewriterText">I know the flight was long...</p>
+        </div>
+        <div class="gift-box" onclick="goToPage('page2')">🎁</div>
+        <p style="color: #999; font-size: 0.8rem;">(Tap the giftji when you feel ready)</p>
+    </div>
+
+    <div id="page2" class="page">
+        <h1>Happy Anniversary ❤️</h1>
+        <p style="font-style: italic;">One Year of Us.</p>
+        
+        <div style="font-size: 60px; margin: 10px 0;">😚💕</div>
+        
+        <div class="timer-box">
+            <p>We've been together for:</p>
+            <div id="timer" class="timer">Calculating...</div>
+        </div>
+
+        <p style="font-size: 0.9rem; max-width: 90%;">
+            "This year pra it wasnt 
+ easy with the distance. There were like times  I wanted to teleport to you and give u huggies(whixh i ll give now.🙈)But having you makes every mile worth it."
+        </p>
+
+        <div class="scratch-container">
+            <div class="scratch-content">i love you my mangomeet,Thankyou for choosing me (silliest boy hehe) ❤️</div>
+            <canvas id="scratchCanvas" width="300" height="100"></canvas>
+        </div>
+        <p style="font-size: 0.7rem; color: #999;">(Scratch above to reveal)</p>
+
+        <button class="btn" onclick="goToPage('page3')">⏪ 1 Year Rewind</button>
+    </div>
+
+    <div id="page3" class="page">
+        <div style="font-size: 50px;">🔒</div>
+        <h2>Unlock Our Memories</h2>
+        <p>Enter the password to see smth awsm hehe  .</p>
+        
+        <input type="text" id="pass1" class="lock-input" placeholder="DD/MM/YYYY">
+        <div id="error1" class="error">Incorrect password, gitu ji.</div>
+        <button class="btn" onclick="checkPass1()">Unlock</button>
+        
+        <div class="hint-btn" onclick="alert('Hint: This is one of the best and  unforgettable day of our lives')">Need a hint?</div>
+    </div>
+
+    <div id="page4" class="page">
+        <h2>Our Beautiful Year 💕</h2>
+        <div class="music-toggle" onclick="toggleMusic()">🎵 Tap to toggle main music</div>
+
+        <div class="memory-card" onclick="toggleCard(this)">
+            <h3>Jan 11 - The Beginning</h3>
+            <p>The day everything changed...</p>
+            <div class="memory-details">
+                <p>we chatted for whole day hehe and finally i understood what tiduu meant and i hope tiduu u didnt regret telling me hanna? .</p>
+                <div class="img-two-grid">
+                    <img src="jan11_pic1.jpg" class="memory-img" alt="Jan 11 Pic 1"> 
+                    <img src="jan11_pic2.PNG" class="memory-img" alt="Jan 11 Pic 2">
+                </div>
+                <p><i>(Our chats started here)</i></p>
+            </div>
+        </div>
+
+        <div class="memory-card" onclick="toggleCard(this)">
+            <h3>Jan 13 - Became a poet</h3>
+            <p>Our Awesome jodi .</p>
+            <div class="memory-details">
+                <p>I still remember i was  with my mom plucking oranges hehe i rhymed for you hehe and surprisingly it was this  exact date (13jan hehe)  .</p>
+                <div style="background: #eee; padding: 10px; margin-top:5px; border-radius:5px;">
+                    <i>"Listen up yo uo yo today is auspicious day of lohri,<br>
+                    Me and you gurshanmeet we could be a nice jodi."</i>
+                </div>
+            </div>
+        </div>
+
+        <div class="memory-card" onclick="toggleCard(this)">
+            <h3>Jan 27 - My baby's bday </h3>
+            <p>The hard goodbye.</p>
+            <div class="memory-details">
+                <p>Tears at the airport. But we promised to stay strong.</p>
+                <div class="img-two-grid">
+                    <img src="jan27_pic1.PNG" class="memory-img" alt="Jan 27 Pic 1">
+                    <img src="jan27_pic2.jpg" class="memory-img" alt="Jan 27 Pic 2">
+                </div>
+                <p><i>(I miss you so much here)</i></p>
+            </div>
+        </div>
+
+        <div class="memory-card" style="border-left-color: #d63384; background: #fff0f5;" onclick="goToPage('page-first-date')">
+            <h3>March 20 - First Date ❤️</h3>
+            <p>Click to open our special moment...</p>
+        </div>
+
+        <button class="btn" onclick="goToPage('page5')">Next Suprise✨💫</button>
+    </div>
+
+    <div id="page-first-date" class="page">
+        <h2>March 20: First Date ❤️</h2>
+        <p>The day I saw you for the first time...</p>
+        
+        <div class="first-date-grid">
+            <img src="date_pic1.jpg" alt="Date Pic 1">
+            <img src="date_pic2.jpg" alt="Date Pic 2">
+            <img src="date_pic3.jpg" alt="Date Pic 3">
+            <img src="date_pic4.jpg" alt="Date Pic 4">
+            <img src="date_pic5.jpg" alt="Date Pic 5">
+            <img src="date_pic6.jpg" alt="Date Pic 6">
+        </div>
+
+        <button class="btn" onclick="goToPage('page4')">🔙 Back to Timeline</button>
+    </div>
+
+    <div id="page5" class="page">
+        <h2>Every Mile Worth It</h2>
+        <p>Swipe to see our LDR moments...</p>
+        
+        <div class="carousel">
+            <div class="polaroid"><img src="gallery1.jpg"><div class="caption">.</div></div>
+            <div class="polaroid"><img src="gallery2.PNG"><div class="caption">. </div></div>
+            <div class="polaroid"><img src="gallery3.jpg"><div class="caption">.</div></div>
+            <div class="polaroid"><img src="gallery4.PNG"><div class="caption">.</div></div>
+            <div class="polaroid"><img src="gallery5.PNG"><div class="caption">.</div></div>
+            <div class="polaroid"><img src="gallery6.PNG"><div class="caption">.</div></div>
+            <div class="polaroid"><img src="gallery7.PNG"><div class="caption">.</div></div>
+            <div class="polaroid"><img src="gallery8.PNG"><div class="caption">.</div></div>
+        </div>
+
+        <button class="btn" onclick="goToPage('page6')">More surprise 💌</button>
+    </div>
+
+    <div id="page6" class="page">
+        <div style="font-size: 50px;">🎤💕</div>
+        <h2>A Song For you</h2>
+        <p>I recorded something special for you ji.</p>
+        
+        <div id="videoLock">
+            <input type="text" id="pass2" class="lock-input" placeholder="GUESS kro ji Mrs.attt (DD/MM/YYYY)">
+            <div id="error2" class="error">Try again, beautiful.</div>
+            <button class="btn" onclick="checkPass2()">Reveal Song</button>
+            <div class="hint-btn" onclick="alert('Hint: Wanna know? Kiss me I’ll tell you 💋😏')">Need a hint?</div>
+        </div>
+
+        <div id="audioContent" class="hidden">
+            <p>Listen closely... ❤️</p>
+            <div style="background: white; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                <div style="font-size: 40px; margin-bottom: 10px;">💿</div>
+                <button class="btn" onclick="playRecordedSong()">▶️ Play My Song</button>
+            </div>
+            <button class="btn" onclick="goToPage('page7')">Open Letter 💌</button>
+        </div>
+    </div>
+
+    <div id="page7" class="page">
+        <div class="envelope-container" id="envelope">
+            <div class="envelope" style="display: flex; align-items: center; justify-content: center; font-size: 50px;">
+                💌
+            </div>
+        </div>
+        
+        <button id="openLetterBtn" class="btn" onclick="openLetter()">OPEN</button>
+
+        <div id="theLetter" class="letter-content">
+            <h3>To: My Love</h3>
+            <p>
+                My Dearest Gurshanmeet,<br><br>
+                This is something shotu and silly ja i was trying i tried it so so many times it was not being made only hehe its  okay finally its you are here sitting with me reading this and smiling hehe blushing hehe smile smile my girl you are with your boy now Nd
+                <br><br>
+                Thank you for being with  me through the bad signals, the missed calls which we hehe give each other by miatke , and the lonely nights where we coulnt b next to each other when the other person was sad. You are my dream come true tiduu.
+                <br><br>
+                I promise to alwys love you.
+                <br><br>
+                Forever yours,<br>
+                Rajanpreet( your Ghushu)
+            </p>
+            <button class="btn" onclick="goToPage('page8')">One Last Thing...</button>
+        </div>
+    </div>
+
+    <div id="page8" class="page">
+        <h1 style="font-size: 3rem;">Happy Anniversary<br>Once Again My Girl</h1>
+        
+        <img src="us_together.jpg" alt="Us Together" class="us-photo">
+        
+        <p>I hope you loved watching this with me 💕</p>
+        
+        <div style="background: white; padding: 20px; border-radius: 10px; margin: 30px 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+            <p style="font-family: 'Indie Flower'; font-size: 1.2rem;">
+                Diffrent time zones ,our nights were long,<br>
+                Anyone can doubt us we ll prove them wrong,<br>
+                After almost a year we are finally so close,<br>
+                This was a small ja gift from the silly boy you chose. 💕
+            </p>
+        </div>
+
+        <h3 style="margin-top: 40px;">HEHE HOW WAS IT RATE OUT OF 10 ji 🫂</h3>
+    </div>
+
+    <script>
+        /* --- Music Manager --- */
+        const bgMusic = document.getElementById('bgMusic');
+        const firstDateMusic = document.getElementById('firstDateMusic');
+        const galleryMusic = document.getElementById('galleryMusic');
+        const recordedSong = document.getElementById('recordedSong');
+
+        function stopAllMusic() {
+            // Don't stop bgMusic here, handle it in logic
+            firstDateMusic.pause();
+            galleryMusic.pause();
+            recordedSong.pause();
+        }
+
+        /* --- Navigation Logic --- */
+        function goToPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active-page'));
+            document.getElementById(pageId).classList.add('active-page');
+            
+            // Stop specific page music when leaving
+            stopAllMusic();
+
+            // MUSIC LOGIC
+            if (pageId === 'page-first-date') {
+                bgMusic.pause();
+                firstDateMusic.play();
+            } else if (pageId === 'page5') { // Gallery
+                bgMusic.pause();
+                galleryMusic.play();
+            } else {
+                // Return to main music if not in special pages
+                if(bgMusic.paused) bgMusic.play();
+            }
+
+            // Special triggers
+            if(pageId === 'page2') startTimer();
+        }
+
+        function playRecordedSong() {
+            bgMusic.pause(); // Ensure bg music is off
+            recordedSong.play();
+        }
+
+        function toggleMusic() {
+            if (bgMusic.paused) {
+                bgMusic.play();
+                alert('Main Music Playing 🎵');
+            } else {
+                bgMusic.pause();
+                alert('Main Music Paused ⏸️');
+            }
+        }
+
+        /* --- Page 1: Typewriter Animation --- */
+        const text = "I know the flight was long and my baby is tired.\nDont worry gituu kaur take a deep breath. Relax.\nYou are finally safe, and you are finally with me sweetheart.";
+        const typewriterElement = document.getElementById('typewriterText');
+        let index = 0;
+
+        function typeWriter() {
+            if (index < text.length) {
+                typewriterElement.innerHTML = text.substring(0, index+1).replace(/\n/g, "<br>");
+                index++;
+                setTimeout(typeWriter, 70); // Speed of typing
+            }
+        }
+        // Start typing when page loads
+        window.onload = typeWriter;
+
+        /* --- Falling Hearts Background --- */
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.innerHTML = '❤️';
+            heart.style.position = 'fixed';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.top = '-20px';
+            heart.style.fontSize = Math.random() * 20 + 10 + 'px';
+            heart.style.animation = 'fall 5s linear';
+            heart.style.opacity = Math.random();
+            document.getElementById('heartsContainer').appendChild(heart);
+
+            setTimeout(() => { heart.remove(); }, 5000);
+        }
+        setInterval(createHeart, 300);
+
+        const style = document.createElement('style');
+        style.innerHTML = `@keyframes fall { to { transform: translateY(100vh); } }`;
+        document.head.appendChild(style);
+
+        /* --- Page 2: Scratch Card Logic --- */
+        const canvas = document.getElementById('scratchCanvas');
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#ccc'; 
+        ctx.fillRect(0, 0, 300, 100);
+        
+        ctx.fillStyle = '#666';
+        ctx.font = '20px Arial';
+        ctx.fillText("Scratch Here to Reveal", 50, 55);
+
+        let isDrawing = false;
+
+        function getMousePos(canvas, evt) {
+            var rect = canvas.getBoundingClientRect();
+            return {
+                x: (evt.clientX || evt.touches[0].clientX) - rect.left,
+                y: (evt.clientY || evt.touches[0].clientY) - rect.top
+            };
+        }
+
+        function scratch(e) {
+            if (!isDrawing) return;
+            e.preventDefault();
+            const pos = getMousePos(canvas, e);
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.beginPath();
+            ctx.arc(pos.x, pos.y, 15, 0, 2 * Math.PI);
+            ctx.fill();
+        }
+
+        canvas.addEventListener('mousedown', () => isDrawing = true);
+        canvas.addEventListener('touchstart', () => isDrawing = true);
+        canvas.addEventListener('mouseup', () => isDrawing = false);
+        canvas.addEventListener('touchend', () => isDrawing = false);
+        canvas.addEventListener('mousemove', scratch);
+        canvas.addEventListener('touchmove', scratch);
+
+        /* --- Page 2: Timer Logic --- */
+        function startTimer() {
+            const startDate = new Date('2025-01-11T00:00:00'); // Anniversary Date
+            
+            setInterval(() => {
+                const now = new Date();
+                const diff = now - startDate;
+
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                document.getElementById('timer').innerText = 
+                    `${days}d ${hours}h ${minutes}m ${seconds}s`;
+            }, 1000);
+        }
+
+        /* --- Page 3: Password 1 --- */
+        function checkPass1() {
+            const input = document.getElementById('pass1').value;
+            if (input === '20/03/2025' || input === '20032025') {
+                goToPage('page4');
+            } else {
+                document.getElementById('error1').style.display = 'block';
+            }
+        }
+
+        /* --- Page 4: Toggle Cards --- */
+        function toggleCard(card) {
+            // Don't toggle if clicking the March 20 special link
+            if(card.onclick.toString().includes('page-first-date')) return;
+
+            const details = card.querySelector('.memory-details');
+            if (details.style.display === 'block') {
+                details.style.display = 'none';
+            } else {
+                details.style.display = 'block';
+            }
+        }
+
+        /* --- Page 6: Password 2 --- */
+        function checkPass2() {
+            const input = document.getElementById('pass2').value;
+            if (input === '27/01/2006' || input === '27012006') {
+                document.getElementById('videoLock').style.display = 'none';
+                document.getElementById('audioContent').classList.remove('hidden');
+            } else {
+                document.getElementById('error2').style.display = 'block';
+            }
+        }
+
+        /* --- Page 7: Letter Animation --- */
+        function openLetter() {
+            document.getElementById('openLetterBtn').style.display = 'none';
+            document.querySelector('.envelope').style.transform = 'rotateX(180deg)';
+            setTimeout(() => {
+                document.getElementById('envelope').style.display = 'none';
+                document.getElementById('theLetter').style.display = 'block';
+                document.getElementById('theLetter').style.animation = 'fadeIn 1s';
+            }, 500);
+        }
+
+    </script>
+</body>
+</html>
